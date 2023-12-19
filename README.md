@@ -66,7 +66,7 @@ internal class Program {
 
 ```
 
-#### Sample 2: Transfer TRX/USDT and multi sign
+#### Sample 2: Transfer TRX/USDT and account permission update
 ```c#
 namespace ConsoleApp1;
 
