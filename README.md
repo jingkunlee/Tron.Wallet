@@ -1,12 +1,12 @@
-# Tron.Wallet
+# TronWallet
 
 ## Get Started
 ### NuGet 
 
-You can run the following command to install the `Tron.Wallet` in your project.
+You can run the following command to install the `TronWallet` in your project.
 
 ```
-PM> Install-Package Tron.Wallet
+PM> Install-Package TronWallet
 ```
 
 ### Configuration
@@ -17,12 +17,12 @@ using Microsoft.Extensions.Options;
 
 namespace ConsoleApp1;
 
-using Tron.Wallet;
+using Tron;
 
 public record TronRecord(IServiceProvider ServiceProvider, ITronClient? TronClient, IOptions<TronNetOptions>? Options);
 
 public static class TronServiceExtension {
-    private static IServiceProvider AddTronNet() {
+    private static IServiceProvider AddTron() {
         IServiceCollection services = new ServiceCollection();
         services.AddTronNet(x => {
             x.Network = TronNetwork.MainNet;
@@ -35,7 +35,7 @@ public static class TronServiceExtension {
     }
 
     public static TronRecord GetRecord() {
-        var provider = AddTronNet();
+        var provider = AddTron();
         var client = provider.GetService<ITronClient>();
         var options = provider.GetService<IOptions<TronNetOptions>>();
 
@@ -52,7 +52,7 @@ public static class TronServiceExtension {
 ```c#
 namespace ConsoleApp1;
 
-using Tron.Wallet;
+using Tron;
 
 internal class Program {    
     private static void Main() {
@@ -72,9 +72,9 @@ namespace ConsoleApp1;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Tron.Wallet;
-using Tron.Wallet.Accounts;
-using Tron.Wallet.Contracts;
+using Tron;
+using Tron.Accounts;
+using Tron.Contracts;
 
 internal class Program {
     private static async Task Main() {
@@ -88,7 +88,7 @@ internal class Program {
 
         //transfer out usdt
         var decimalAmount = new decimal(1);
-        var transactionId = await EtherTransferAsync(privateKey, toAddress, decimalAmount, null);
+        var transactionId = await TetherUsdTransferAsync(privateKey, toAddress, decimalAmount, null);
         Console.WriteLine(transactionId);
 
         //Account permission update
@@ -111,10 +111,10 @@ internal class Program {
         var transactionSigned = transactionClient.GetTransactionSign(transactionExtension.Transaction, privateKey);
         var returnObj = await transactionClient.BroadcastTransactionAsync(transactionSigned);
 
-        return new { Result = returnObj.Result, Message = returnObj.Message, TransactionId = transactionId };
+        return new { Result = returnObj.Result, Message = returnObj.Message?.ToStringUtf8(), TransactionId = transactionId };
     }
 
-    private static async Task<string> EtherTransferAsync(string privateKey, string toAddress, decimal amount, string? memo) {
+    private static async Task<string> TetherUsdTransferAsync(string privateKey, string toAddress, decimal amount, string? memo) {
         const string contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
 
         var record = TronServiceExtension.GetRecord();
@@ -138,7 +138,7 @@ internal class Program {
         var transactionSigned = transactionClient.GetTransactionSign(transactionExtention.Transaction, privateKey);
         var returnObj = await transactionClient.BroadcastTransactionAsync(transactionSigned);
 
-        return new { Result = returnObj.Result, Message = returnObj.Message, TransactionId = transactionExtention.Transaction.GetTxid() };
+        return new { Result = returnObj.Result, Message = returnObj.Message?.ToStringUtf8(), TransactionId = transactionExtention.Transaction.GetTxid() };
     }
 }
 ```
