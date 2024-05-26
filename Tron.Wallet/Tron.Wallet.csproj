@@ -14,7 +14,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Portable.BouncyCastle" Version="1.8.9" />
-		<PackageReference Include="Tron.Wallet.Protocol" Version="1.2.0" />
+		<PackageReference Include="TronProtocol" Version="1.0.0" />
 	</ItemGroup>
 
 </Project>
