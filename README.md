@@ -6,7 +6,7 @@
 You can run the following command to install the `TronWallet` in your project.
 
 ```
-PM> Install-Package TronWallet
+PM> Install-Package TronNet.Wallet
 ```
 
 ### Configuration
